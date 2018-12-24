@@ -1,0 +1,22 @@
+{
+  "name": "redis-music-store",
+  "version": "1.0.0",
+  "description": "Music Store App using Redis Caching For Store Items",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Redis",
+    "Nodejs"
+  ],
+  "author": "Steven Freed",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "nodemon": "^1.18.9",
+    "redis": "^2.8.0"
+  }
+}
