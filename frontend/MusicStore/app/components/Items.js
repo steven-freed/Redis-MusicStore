@@ -3,16 +3,25 @@ import {
   Text, View, StyleSheet, FlatList, Animated
 } from 'react-native';
 
-export default class Instruments extends React.Component {
+export default class Items extends React.Component {
   constructor(props) {
     super(props);
 
   }
 
+  componentWillMount()
+  {
+    fetch('POST')
+  }
+
+  getProducts()
+
   render() {
     return (
       <View>
-        <Text>Heyyo</Text>
+              <Instrument
+                  info={}
+                   />
       </View>
     );
   }

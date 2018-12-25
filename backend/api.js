@@ -1,22 +1,41 @@
-const redis = require('redis');
+const redisdb = require('redis');
+const mysqldb = require("mysql");
 const express = require('express'); // Backend config
 
 // Create Express router to route to index.js express app
 const router = express.Router();
 
 // redis client
-var PORT = '6379';
+var redisPORT = '6379';
+var sqlPORT = '3306';
 var HOST = '127.0.0.1'
-let client = redis.createClient(PORT, HOST, {no_ready_check: true});
+let redis = redisdb.createClient(redisPORT, HOST, {no_ready_check: true});
 
-client.on('connect', function() {
-  console.log('Successful connection to Redis on port ' + PORT);
-})
+// MySQL
+var mysql = mysqldb.createConnection({
+ host: HOST,
+ user: 'root',
+ password: 'password',
+ database: 'MusicStore',
+ port: sqlPORT
+});
+
+mysql.connect((err) => {
+  if (err) {
+    throw err;
+  } else {
+    console.log('Successful connection to MySQL on port ' + sqlPORT)
+  }
+});
+
+redis.on('connect', function() {
+  console.log('Successful connection to Redis on port ' + redisPORT);
+});
 
 router.post('/cart', function(req, res) {
   let id = req.body.id;
 
-  client.zrange('cart_' + id, 0, -1, 'WITHSCORES', function(err, obj) {
+  redis.zrange('cart_' + id, 0, -1, 'WITHSCORES', function(err, obj) {
     if (obj)
     {
       let cart = listToCart(obj);
@@ -39,7 +58,7 @@ router.post('/addToCart', function(req, res) {
   args.unshift('cart_' + id);
   args.join("','");
 
-		client.zadd(...args, function(err, obj) {
+		redis.zadd(...args, function(err, obj) {
       if (obj)
       {
         res.json(obj);
@@ -57,7 +76,7 @@ router.post('/removeFromCart', function(req, res) {
   let id = req.body.id;
   let item = req.body.item.productid;
 
-  client.zrem('cart_' + id, item, function(err, obj) {
+  redis.zrem('cart_' + id, item, function(err, obj) {
     if (obj)
     {
       res.json(obj);
@@ -73,7 +92,7 @@ router.post('/removeFromCart', function(req, res) {
 
 router.post('/clearCart', function(req, res) {
   let id = req.body.id;
-  client.del('cart_' + id, function(err, obj) {
+  redis.del('cart_' + id, function(err, obj) {
     if (obj)
     {
       res.json(obj);
@@ -86,20 +105,20 @@ router.post('/clearCart', function(req, res) {
   });
 });
 
-router.get('/products', function(req, res){
+router.post('/products', function(req, res){
 
-  client.lrange('products', 0, -1, function(err, obj) {
-    if (obj)
-    {
-      res.json(parseson(obj));
-    } else {
-      res.json({
-        error: err,
-        status: obj
-      });
-    }
-  });
+  let department = req.body.department;
+  let query = "SELECT * FROM Products WHERE department = '" + department + "'";
 
+  mysql.query(query, function(error, results, fields) {
+
+      if (error)
+      {
+        res.status(400).json(error);
+      } else {
+        res.status(200).json(results);
+      }
+});
 });
 
 /*

@@ -14,7 +14,7 @@ import Header from './app/components/Header';
 import Category from './app/components/Category';
 import CompanyLogo from './app/components/Company';
 import Container from './app/components/Container';
-import Instruments from './app/components/Instruments';
+import Items from './app/components/Items';
 import Home from './app/components/Home';
 
 export default class App extends React.Component {
@@ -26,7 +26,7 @@ export default class App extends React.Component {
 export const AppStack = createStackNavigator({
     Home: Home,
     Category: Category,
-    Instruments: Instruments,
+    Items: Items,
     },
     {
       initialRouteName: 'Home'

@@ -14,13 +14,14 @@ export default class Container extends React.Component {
       <View style={styles.container}>
           <View style={styles.largeCol}>
               <Category imageSource={require('../img/instruments.png')}
-                        header="Instruments" navigation={this.props.navigation} />
-
+                        header="Instruments" />
           </View>
+
           <View style={styles.smallCol}>
               <Category imageSource={require('../img/piano.jpg')}
                         header="Sheet Music" />
           </View>
+
           <View style={styles.content}>
               <Category imageSource={require('../img/equipment.jpg')}
                         header="Equipment" />

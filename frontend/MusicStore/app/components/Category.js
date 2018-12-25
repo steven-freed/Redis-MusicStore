@@ -8,7 +8,8 @@ import {
   View,
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import Instruments from './Instruments';
+
+import Items from './Items';
 import CategoryBanner from './CategoryBanner';
 
 class Category extends React.Component {
@@ -19,12 +20,12 @@ class Category extends React.Component {
 
     this.pressIn = this.pressIn.bind(this);
     this.pressOut = this.pressOut.bind(this);
-    this.seeInstruments = this.seeInstruments.bind(this);
+    this.seeCategory = this.seeCategory.bind(this);
   }
 
-  seeInstruments()
+  seeCategory(e)
   {
-      this.props.navigation.navigate('Instruments');
+      this.props.navigation.navigate(e.header);
   }
 
   pressOut()
@@ -54,7 +55,7 @@ class Category extends React.Component {
     }
 
     return (
-          <TouchableWithoutFeedback  onPress={this.seeInstruments} onPressIn={this.pressIn} onPressOut={this.pressOut} >
+          <TouchableWithoutFeedback  category={this.props.header} onPress={this.seeInstruments} onPressIn={this.pressIn} onPressOut={this.pressOut} >
             <Animated.View style={animatedStyle}>
             <ImageBackground source={this.props.imageSource}
                        style={styles.button} >
