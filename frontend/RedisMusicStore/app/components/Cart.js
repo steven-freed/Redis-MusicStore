@@ -5,7 +5,7 @@ import {
 
 import Item from './Item';
 
-export default class Items extends React.Component {
+export default class Cart extends React.Component {
   constructor(props) {
     super(props);
 
@@ -17,21 +17,20 @@ export default class Items extends React.Component {
 
   componentDidMount()
   {
+    var userId = 'myUserId';
 
-    var department = this.props.navigation.getParam('header').toLowerCase();
-
-    fetch('http:192.168.1.3:13013/store/products', {
+    fetch('http:192.168.1.3:13013/store/cart', {
       method: 'POST',
       headers: {
          'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        'department': department
+        'id': userId
       }),
     }).then(res => res.json()
   ).then(data => {
-    this.setState({ items: data })
+    this.setState({ items: data });
   }).catch((error) => {
      alert(error.message);
   });
@@ -40,27 +39,29 @@ export default class Items extends React.Component {
 
   _renderItem = ({item}) => (
     <Item
-      department={item.department}
+      name={item.productid}
+      brand={item.quantity}
       productId={item.productId}
-      name={item.name}
-      price={item.price}
-      brand={item.brand}
-      description={item.description}
       />
     );
 
-    _keyExtractor = (item, index) => item.productId;
+    _keyExtractor = (item, index) => item.productid;
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: 'Cart 🛒'
+    };
+  };
 
   render() {
     return (
-      <View>
+    <View>
       <FlatList
-          data={this.state.items}
-          keyExtractor={this._keyExtractor}
-          renderItem={this._renderItem}
-          />
-      </View>
-    );
+        data={this.state.items}
+        keyExtractor={this._keyExtractor}
+        renderItem={this._renderItem}
+        />
+    </View>
+  );
   }
-
 }

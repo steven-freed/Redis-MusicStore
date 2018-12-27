@@ -7,9 +7,11 @@ import {
 } from 'react-native';
 import {
   createStackNavigator,
-  createAppContainer
+  createAppContainer,
+  withNavigation
 } from 'react-navigation';
 
+import Cart from './app/components/Cart';
 import Category from './app/components/Category';
 import CompanyLogo from './app/components/Company';
 import Container from './app/components/Container';
@@ -29,6 +31,7 @@ export const AppStack = createStackNavigator({
     Home: Home,
     Category: Category,
     Items: Items,
+    Cart: Cart
     },
     {
       initialRouteName: 'Home'

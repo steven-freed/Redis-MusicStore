@@ -61,16 +61,47 @@ router.post('/addToCart', function(req, res) {
 		redis.zadd(...args, function(err, obj) {
       if (obj)
       {
+        console.log('if');
         res.json(obj);
       } else {
-        res.json({
-          error: err,
-          status: obj
-        });
+        console.log('else')
+
+       if (checkQuantity(id, item.productid) === 0) {
+          res.status(400).json({
+            error: 'Something went wrong...'
+          });
+        } else {
+          res.status(200).json(1);
+        }
+      }
+  });
+
+});
+
+function checkQuantity(id, productid)
+{
+  var flag = 0;
+  var score = 0;
+/*
+  redis.zscore('cart_' + id, productid, function(err, obj) {
+      if (obj > 0)
+      {
+        score = obj;
       }
     });
+*/
+  //  console.log('ZINCRBY cart_' + id + ' 1 ' + productid);
 
-  });
+      redis.ZINCRBY('cart_' + id, 1, parseInt(productid), function(err, obj) {
+        console.log('obj = ' + obj);
+        if (obj)
+        {
+          flag = 1;
+        }
+      });
+
+  return flag;
+}
 
 router.post('/removeFromCart', function(req, res) {
   let id = req.body.id;

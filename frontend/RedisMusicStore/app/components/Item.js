@@ -9,7 +9,9 @@ import {
   Image,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import {
+   withNavigation
+} from 'react-navigation';
 
 class Item extends React.Component {
   constructor(props) {
@@ -29,7 +31,7 @@ class Item extends React.Component {
       quantity: 1
     };
 
-    fetch('http:192.168.1.8:13013/store/addToCart', {
+    fetch('http:192.168.1.3:13013/store/addToCart', {
       method: 'POST',
       headers: {
          'Accept': 'application/json',
