@@ -32,6 +32,9 @@ redis.on('connect', function() {
   console.log('Successful connection to Redis on port ' + redisPORT);
 });
 
+/*
+ *  Gets a users cart (Redis Cache)
+ */
 router.post('/cart', function(req, res) {
   let id = req.body.id;
 
@@ -40,72 +43,90 @@ router.post('/cart', function(req, res) {
     {
       let cart = listToCart(obj);
       let jsonCart = parseson(cart);
-      res.json({
-        items: jsonCart
-      });
+      res.json(jsonCart);
     } else {
       res.json(err);
     }
   });
 });
 
+/*
+ *  Adds Item to Cart (Redis)
+ *    - holds "productid:name:price" as value (delimited in Redis by colons)
+ *    - holds "quantity" as score (sorted list in Redis)
+ */
 router.post('/addToCart', function(req, res) {
   let id = req.body.id;
   let item = req.body.item;
+  let productInfo = item.productid + ":" + item.name + ":" + item.price;
 
-  // quantity is stored as Redis score, productid is stored as Redis value
-  let args = [item.quantity, item.productid];
-  args.unshift('cart_' + id);
-  args.join("','");
+  // if item is NOT in cache
+  if (checkScore(id, productInfo) === 0)
+  {
 
-		redis.zadd(...args, function(err, obj) {
+		redis.zadd('cart_' + id, item.quantity, productInfo, function(err, obj) {
       if (obj)
       {
-        console.log('if');
-        res.json(obj);
+        res.status(200).json(obj);
       } else {
-        console.log('else')
-
-       if (checkQuantity(id, item.productid) === 0) {
-          res.status(400).json({
-            error: 'Something went wrong...'
-          });
-        } else {
-          res.status(200).json(1);
-        }
+        res.status(400).json(err);
       }
   });
 
-});
+// if item IS already in cache
+} else {
 
-function checkQuantity(id, productid)
-{
-  var flag = 0;
-  var score = 0;
-/*
-  redis.zscore('cart_' + id, productid, function(err, obj) {
-      if (obj > 0)
-      {
-        score = obj;
-      }
+ if (incQuantity(id, productInfo) === 0)
+ {
+    res.status(400).json({
+      error: 'Something went wrong...'
     });
-*/
-  //  console.log('ZINCRBY cart_' + id + ' 1 ' + productid);
+  } else {
+    res.status(200).json(1);
+  }
 
-      redis.ZINCRBY('cart_' + id, 1, parseInt(productid), function(err, obj) {
-        console.log('obj = ' + obj);
-        if (obj)
-        {
-          flag = 1;
-        }
-      });
-
-  return flag;
 }
 
+});
+
+/*
+ *  Checks if item is already in Redis Cache
+ */
+function checkScore(id, value)
+{
+  redis.ZSCORE('cart_' + id, value, function(err, obj) {
+    if (obj > 0)
+    {
+        return 1;
+    } else {
+      return 0;
+    }
+  });
+}
+
+/*
+ *  Increments the quantity of an item in Redis Cache
+ */
+function incQuantity(id, product)
+{
+    redis.ZINCRBY("cart_" + id, 1, product, function(err, obj) {
+        if (obj)
+        {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+}
+
+/*
+ *  Removes item from Redis Cache
+ */
 router.post('/removeFromCart', function(req, res) {
   let id = req.body.id;
-  let item = req.body.item.productid;
+  let item = req.body.item;
+
+  console.log(item);
 
   redis.zrem('cart_' + id, item, function(err, obj) {
     if (obj)
@@ -113,7 +134,6 @@ router.post('/removeFromCart', function(req, res) {
       res.json(obj);
     } else {
       res.json({
-        error: err,
         status: obj
       })
     }
@@ -121,6 +141,9 @@ router.post('/removeFromCart', function(req, res) {
 
 });
 
+/*
+ *  Clears a users Redis shopping cart
+ */
 router.post('/clearCart', function(req, res) {
   let id = req.body.id;
   redis.del('cart_' + id, function(err, obj) {
@@ -129,13 +152,15 @@ router.post('/clearCart', function(req, res) {
       res.json(obj);
     } else {
       res.json({
-        error: err,
         status: obj
       });
     }
   });
 });
 
+/*
+ *  Gets all products from MySQL database
+ */
 router.post('/products', function(req, res){
 
   let department = req.body.department;
@@ -148,7 +173,6 @@ router.post('/products', function(req, res){
         res.status(400).json(error);
       } else {
         res.status(200).json(results);
-        //res.status(200).send(JSON.stringify(results));
       }
 });
 });
@@ -162,8 +186,12 @@ function listToCart(list)
   var i, q;
   for (i = 0, q = 1; i < list.length; i+=2, q+=2)
   {
+    let productDetail = list[i].split(":");
+
     var product = {
-        productid: list[i],
+        productid: parseInt(productDetail[0]),
+        name: productDetail[1],
+        price: (Math.round(productDetail[2] * 100) / 100),
         quantity: list[q]
     };
     cart.push(JSON.stringify(product));

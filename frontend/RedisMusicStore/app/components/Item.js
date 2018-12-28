@@ -28,6 +28,8 @@ class Item extends React.Component {
   {
     let newItem = {
       productid: this.props.productId,
+      name: this.props.name,
+      price: this.props.price,
       quantity: 1
     };
 

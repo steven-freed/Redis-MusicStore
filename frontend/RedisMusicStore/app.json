@@ -10,9 +10,9 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/img/cart.png",
+    "icon": "./app/img/music_note.png",
     "splash": {
-      "image": "./app/img/cart.png",
+      "image": "./app/img/music_note.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

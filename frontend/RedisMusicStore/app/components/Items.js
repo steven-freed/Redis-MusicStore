@@ -31,7 +31,7 @@ export default class Items extends React.Component {
       }),
     }).then(res => res.json()
   ).then(data => {
-    this.setState({ items: data })
+    this.setState({ items: data });
   }).catch((error) => {
      alert(error.message);
   });
@@ -49,12 +49,19 @@ export default class Items extends React.Component {
       />
     );
 
-    _keyExtractor = (item, index) => item.productId;
+    _keyExtractor = (item, index) => item.productId.toString();
+
+    static navigationOptions = ({ navigation }) => {
+       return {
+         headerTitle: navigation.getParam('header')
+       };
+     };
 
   render() {
     return (
       <View>
       <FlatList
+          style={styles.list}
           data={this.state.items}
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
@@ -64,3 +71,10 @@ export default class Items extends React.Component {
   }
 
 }
+
+const styles = StyleSheet.create({
+  list: {
+    width: '100%',
+    height: '100%'
+  }
+});
