@@ -18,6 +18,8 @@ export default class Cart extends React.Component {
 
     this.state = {
       items: [],
+      location: null,
+      timestamp: null,
     };
 
     this.clearCart = this.clearCart.bind(this);
@@ -90,6 +92,19 @@ export default class Cart extends React.Component {
 
     setTotal()
     {
+
+      // gets user location
+      navigator.geolocation.getCurrentPosition(
+            (position) => {
+              this.setState({
+                location: [position.coords.latitude, position.coords.longitude],
+                timestamp: position.timestamp
+              });
+            },
+            (error) => this.setState({ location: [], timestamp: null }),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+          );
+
       let items = this.state.items;
       var total = 0;
       for (var i = 0; i < items.length; i++)

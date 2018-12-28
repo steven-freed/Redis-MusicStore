@@ -7,7 +7,10 @@ CREATE TABLE Products (
     description VARCHAR(150),
     department VARCHAR(50) NOT NULL,
     price DECIMAL(10,2) NOT NULL,
-    image VARCHAR(50)
+    image VARCHAR(50),
+	CONSTRAINT fk_Manufacturer_name
+    FOREIGN KEY (brand)
+    REFERENCES Manufacturers(name)
 );
 
 -- total includes shipping cost
@@ -19,6 +22,33 @@ CREATE TABLE Orders (
     shippingMethod VARCHAR(50) NOT NULL,
     shippingCost DECIMAL(5,2) NOT NULL
 );
+
+CREATE TABLE Manufacturers (
+	name VARCHAR(50) NOT NULL PRIMARY KEY,
+    latitude DECIMAL(8, 6),
+    longitude DECIMAL(9, 6)
+);
+
+INSERT INTO Manufacturers VALUES
+('Fender', 33.646255, -111.899090),
+('Dean', ),
+('Pearl', ),
+('Vic Firth', ),
+('Ernie Ball', ),
+('Dunlop', ),
+('Gibson', ),
+('DDrum', ),
+('Stedman Pro', ),
+('Mel Bay', ),
+('Hal Leonard', ),
+('Sennheiser', ),
+('Apogee', ),
+('PreSonus', ),
+('IK Multimedia', )
+('Behringer', ),
+('Shure', ),
+('Yamaha', ),
+('Blue Yeti', )
 
 INSERT INTO Products VALUES
 (NULL,'Fender Stratocaster', 'Fender', 'Great guitar for intermediate players.', 'instruments', 699.99, NULL),
@@ -33,10 +63,10 @@ INSERT INTO Products VALUES
 (NULL, 'Stedman Pro Bass', 'Stedman Pro', 'A great beginners bass.','instruments', 99.99, NULL),
 (NULL,'The Jazz Guitar Guide', 'Mel Bay', 'A total jazz guide covering everything from modes to chords and keys.', 'sheet music', 9.99, NULL),
 (NULL,'Blues Style', 'Mel Bay', 'A guide to the classic style of blues music. This covers composure as well as many legendary techniques used.','sheet music', 6.99, NULL),
-(NULL,'Guitar Hero 2: Soundtrack', 'Hal Leonard', 'From everyones favorite video game of the early 2000''s','sheet music', 11.99, NULL), 
+(NULL,'Guitar Hero 2 - Soundtrack', 'Hal Leonard', 'From everyones favorite video game of the early 2000''s','sheet music', 11.99, NULL), 
 (NULL,'Classical Music Classics', 'Mel Bay', 'For oldies and new aspiring classical players.','sheet music', 9.99, NULL),
 (NULL,'Blue Grass Hits', 'Mel Bay', 'For country boys looking to learn some classics.','sheet music', 8.99, NULL),
-(NULL,'Marshall Tucker: Greatest Hits', 'Hal Leonard', 'The one and only 70''s rock band.','sheet music', 10.99, NULL),
+(NULL,'Marshall Tucker - Greatest Hits', 'Hal Leonard', 'The one and only 70''s rock band.','sheet music', 10.99, NULL),
 (NULL,'The Big 4', 'Hal Leonard', 'Hits from all of the shows of the Big 4 line up.','sheet music', 11.99, NULL),
 (NULL,'Sennheiser Mic', 'Sennheiser', 'Professional mic for studio quality sound.','equipment', 99.99, NULL), 
 (NULL,'Apogee Duet', 'Apogee', 'Everyone from Kygo to Bruce Springsteen uses this for studio and live effects.','equipment', 595.00, NULL),
