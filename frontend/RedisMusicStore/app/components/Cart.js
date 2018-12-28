@@ -18,8 +18,7 @@ export default class Cart extends React.Component {
 
     this.state = {
       items: [],
-      location: null,
-      timestamp: null,
+      total: 0.00
     };
 
     this.clearCart = this.clearCart.bind(this);
@@ -32,6 +31,8 @@ export default class Cart extends React.Component {
   {
     var userId = 'myUserId';
 
+    if (this.state.items.length > 0)
+    {
     fetch('http:192.168.1.3:13013/store/clearCart', {
       method: 'POST',
       headers: {
@@ -47,13 +48,18 @@ export default class Cart extends React.Component {
     {
       throw "Could not clear your cart at this time";
     } else {
-        this.setState({ items: [] });
+        this.setState({
+          items: [],
+          total: 0.00
+      });
     }
   }).catch((error) => {
      alert(error.message);
   });
 
   this.setTotal();
+  }
+
   }
 
   componentDidMount()
@@ -92,19 +98,6 @@ export default class Cart extends React.Component {
 
     setTotal()
     {
-
-      // gets user location
-      navigator.geolocation.getCurrentPosition(
-            (position) => {
-              this.setState({
-                location: [position.coords.latitude, position.coords.longitude],
-                timestamp: position.timestamp
-              });
-            },
-            (error) => this.setState({ location: [], timestamp: null }),
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-          );
-
       let items = this.state.items;
       var total = 0;
       for (var i = 0; i < items.length; i++)
@@ -165,7 +158,52 @@ export default class Cart extends React.Component {
 
     placeOrder()
     {
+      var today = new Date();
+      var dd = today.getDate();
+      var mon = today.getMonth()+1;
+      var yyyy = today.getFullYear();
+      var hh = today.getHours();
+      var mm = today.getMinutes();
+      var ss = today.getSeconds();
+      let time = yyyy + "-" + mon + "-" + dd + " " + hh + ":" + mm + ":" + ss;
+      let total = this.state.total;
+      let userId = 'myUserId';
+
+      let items = this.state.items;
+      let ids = [];
+
+      for (var i = 0; i < items.length; i++)
+      {
+        ids[i] = {productid: items[i].productid, quantity: parseInt(items[i].quantity)};
+      }
+
+      if (ids.length > 0)
+      {
+      fetch('http:192.168.1.3:13013/store/order', {
+        method: 'POST',
+        headers: {
+           'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'id': userId,
+          'total': parseFloat(parseFloat(total).toFixed(2)),
+          'time': time,
+          'items': ids
+        }),
+      }).then(res => {
+        if (res.status === 400) throw {message: "Could not place order at this time."}
+        else res.json()
+    }).then(data => {
       Alert.alert('Order Placed! Thank you.');
+      this.clearCart();
+    }).catch((error) => {
+       alert(error.message);
+    });
+  } else {
+    Alert.alert('Cart is Empty. Load it up!');
+  }
+
     }
 
     _keyExtractor = (item, index) => item.productid.toString();
