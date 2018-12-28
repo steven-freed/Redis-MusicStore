@@ -23,6 +23,7 @@ export default class Cart extends React.Component {
     this.clearCart = this.clearCart.bind(this);
     this.removeItem = this.removeItem.bind(this);
     this.placeOrder = this.placeOrder.bind(this);
+    this.setTotal = this.setTotal.bind(this);
   }
 
   clearCart()
@@ -49,6 +50,8 @@ export default class Cart extends React.Component {
   }).catch((error) => {
      alert(error.message);
   });
+
+  this.setTotal();
   }
 
   componentDidMount()
@@ -67,6 +70,7 @@ export default class Cart extends React.Component {
     }).then(res => res.json()
   ).then(data => {
     this.setState({ items: data });
+    this.setTotal();
   }).catch((error) => {
      alert(error.message);
   });
@@ -83,6 +87,20 @@ export default class Cart extends React.Component {
       />
       </View>
     );
+
+    setTotal()
+    {
+      let items = this.state.items;
+      var total = 0;
+      for (var i = 0; i < items.length; i++)
+      {
+        total += items[i].price * items[i].quantity;
+      }
+      this.setState({
+        total: total.toFixed(2)
+      });
+    }
+
 
     removeItem(id, name, price) {
       let userId = 'myUserId';
@@ -126,6 +144,8 @@ export default class Cart extends React.Component {
       refresh: Math.random()
     });
 
+    this.setTotal();
+
     }
 
     placeOrder()
@@ -168,7 +188,10 @@ export default class Cart extends React.Component {
         renderItem={this._renderItem}
         renderQuickActions={this._renderQuickActions}
         />
+    <View style={styles.orderView}>
+    <Text style={styles.totalText}>Total: ${this.state.total}</Text>
     <Button title="Order" style={styles.orderButton} onPress={this.placeOrder}/>
+    </View>
     </View>
   );
   } 
@@ -176,17 +199,32 @@ export default class Cart extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  totalText: {
+    paddingTop: 5,
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'center',
+    justifyContent: 'center'
+  },
+  orderView: {
+    backgroundColor: 'rgba(52, 52, 52, 0.9)',
+    flex: 1,
+    bottom: 0,
+    width: '100%',
+    height: '20%',
+    position: 'absolute',
+    flexDirection: 'column',
+    textAlign: 'center',
+    justifyContent: 'center',
+  },
   orderButton: {
     fontWeight: 'bold',
     fontSize: 24,
     width: '100%',
-    height: '10%',
-    textAlign: 'center',
-    justifyContent: 'center'
   },
   list: {
     width: '100%',
-    height: '90%'
+    height: '100%'
   },
   row: {
     flexDirection: 'row',
