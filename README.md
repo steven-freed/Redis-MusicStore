@@ -10,7 +10,7 @@ Created using React Native and tested using the Expo client. React Navigation is
 
 REST Api created using Express via Node.js. MySQL database used to hold orders and products. Redis used to hold products for a user shopping cart. Triggers, table creation commands, and sample data for MySQL in '/backend/MySQL\ Scripts/schema.sql'.
 
-### App Sample Screen Shots
+## App Sample Screen Shots
 
 | ![Alt text](/appScreenShots/home.PNG?raw=true) |
 |:--:|
@@ -36,7 +36,7 @@ REST Api created using Express via Node.js. MySQL database used to hold orders a
 |:--:|
 | *Order* |
 
-#### Running The Project
+## Running The Project
 
 Frontend:
 install all node packages with
