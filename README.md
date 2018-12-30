@@ -28,7 +28,7 @@ REST Api created using Express via Node.js. MySQL database used to hold orders a
 |:--:|
 | *Shopping Cart* |
 
-| ![Alt text](/appScreenShots/cart.PNG?raw=true) |
+| ![Alt text](/appScreenShots/delete.PNG?raw=true) |
 |:--:|
 | *Delete from Shopping Cart* |
 
