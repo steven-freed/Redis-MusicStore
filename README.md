@@ -12,23 +12,29 @@ REST Api created using Express via Node.js. MySQL database used to hold orders a
 
 ### App Sample Screen Shots
 
-Home Page
-![Alt text](/appScreenShots/home.PNG?raw=true)
+| ![Alt text](/appScreenShots/home.PNG?raw=true) |
+|:--:|
+| *Home Page* |
 
-Products
-![Alt text](/appScreenShots/products.PNG?raw=true)
+| ![Alt text](/appScreenShots/products.PNG?raw=true) |
+|:--:|
+| *Products* |
 
-Network Error Handling
-![Alt text](/appScreenShots/networkError.PNG?raw=true)
+| ![Alt text](/appScreenShots/networkError.PNG?raw=true) |
+|:--:|
+| *Network Error Handling* |
 
-Shopping Cart
-![Alt text](/appScreenShots/cart.PNG?raw=true)
+| ![Alt text](/appScreenShots/cart.PNG?raw=true) |
+|:--:|
+| *Shopping Cart* |
 
-Delete from Shopping Cart
-![Alt text](/appScreenShots/cart.PNG?raw=true)
+| ![Alt text](/appScreenShots/cart.PNG?raw=true) |
+|:--:|
+| *Delete from Shopping Cart* |
 
-Order
-![Alt text](/appScreenShots/order.PNG?raw=true)
+| ![Alt text](/appScreenShots/order.PNG?raw=true) |
+|:--:|
+| *Order* |
 
 #### Running The Project
 
