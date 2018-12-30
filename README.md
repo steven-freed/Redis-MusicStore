@@ -39,11 +39,11 @@ REST Api created using Express via Node.js. MySQL database used to hold orders a
 ## Running The Project
 
 ### Frontend:
-install all node packages with
+1. Install all node packages with
 ```
 $ npm install
 ```
-run app using expo
+2. Run app using expo
 ```
 $ expo start
 ```
@@ -51,16 +51,21 @@ $ expo start
 NOTE: If using Expo to run the app change the api host to your machines IP. The code shows the host as local (127.0.0.1) for api calls.
 
 ### Backend:
-set up a MySQL database and run table creation commands, trigger creation command, and load with sample data.
+1. Set up a MySQL database and run table creation commands, trigger creation command, and load with sample data.
 
-run a Redis server
+2. Run a Redis server
+   Products are stored in Redis (shopping cart) as a 'Sorted Set'
+   Sorted Set: Score is used to represent the quantity of a specific product. Member name is a string of attributes delimited by a colon.
+   ex.
+      member:   "productId:name:price"
+      score:    2
 
-install all node packages with
+3. Install all node packages with
 ```
 $ npm install
 ```
 
-run api
+4. Run api
 ```
 $ npm start
 ```
