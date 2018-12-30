@@ -56,7 +56,7 @@ NOTE: If using Expo to run the app change the api host to your machines IP. The 
 2. Run a Redis server
    Products are stored in Redis (shopping cart) as a 'Sorted Set'
    Sorted Set: Score is used to represent the quantity of a specific product. Member name is a string of attributes delimited by a colon.<br />
-   ex.
+   ex.<br />
       member:   "productId:name:price" <br />
       score:    2 <br />
 
