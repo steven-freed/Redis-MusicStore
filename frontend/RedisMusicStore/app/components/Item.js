@@ -24,6 +24,9 @@ class Item extends React.Component {
     this.pressOut = this.pressOut.bind(this);
   }
 
+  /*
+   *  Adds item to cart (Redis) once clicked on
+   */
   addToCart(e)
   {
     let newItem = {
@@ -33,7 +36,7 @@ class Item extends React.Component {
       quantity: 1
     };
 
-    fetch('http:192.168.1.3:13013/store/addToCart', {
+    fetch('http:127.0.0.1:13013/store/addToCart', {
       method: 'POST',
       headers: {
          'Accept': 'application/json',
@@ -58,6 +61,7 @@ class Item extends React.Component {
 
   }
 
+  // animates button on let go
   pressOut()
   {
     Animated.spring(this.animatedValue, {
@@ -67,6 +71,7 @@ class Item extends React.Component {
     }).start();
   }
 
+  // animates button on click
   pressIn()
   {
     Animated.spring(this.animatedValue, {
@@ -160,4 +165,5 @@ const styles = StyleSheet.create({
   }
 });
 
+// Allows Item component all navigation info
 export default withNavigation(Item);

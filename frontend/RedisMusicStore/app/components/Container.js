@@ -8,6 +8,9 @@ import {
 
 import Category from './Category';
 
+/*
+ *  Home screen container for all Category images
+ */
 export default class Container extends React.Component {
   render() {
     return (

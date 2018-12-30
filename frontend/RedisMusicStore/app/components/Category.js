@@ -23,11 +23,15 @@ class Category extends React.Component {
     this.seeCategory = this.seeCategory.bind(this);
   }
 
+  /*
+   *  Navigates to Category once clicked on
+   */
   seeCategory(e)
   {
     this.props.navigation.navigate('Items', {header: this.props.header});
   }
 
+  // animates button on let go
   pressOut()
   {
     Animated.spring(this.animatedValue, {
@@ -37,6 +41,7 @@ class Category extends React.Component {
     }).start();
   }
 
+  // animates button on click
   pressIn()
   {
     Animated.spring(this.animatedValue, {
@@ -46,6 +51,7 @@ class Category extends React.Component {
 
   render() {
 
+    // animation for Category Touchable
     const animatedStyle = {
       transform: [{ scale: this.animatedValue }],
       width: '100%',
@@ -77,4 +83,5 @@ const styles = StyleSheet.create({
   }
 });
 
+// Allows Category component all navigation info
 export default withNavigation(Category);

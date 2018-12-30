@@ -27,13 +27,17 @@ export default class Cart extends React.Component {
     this.setTotal = this.setTotal.bind(this);
   }
 
+  /*
+   *  Calls api to clear the user shopping cart
+   *  sets the total after clearing cart
+   */
   clearCart()
   {
     var userId = 'myUserId';
 
     if (this.state.items.length > 0)
     {
-    fetch('http:192.168.1.3:13013/store/clearCart', {
+    fetch('http:127.0.0.1:13013/store/clearCart', {
       method: 'POST',
       headers: {
          'Accept': 'application/json',
@@ -62,11 +66,14 @@ export default class Cart extends React.Component {
 
   }
 
+  /*
+   *  Fetches user cart products from Redis
+   */
   componentDidMount()
   {
     var userId = 'myUserId';
 
-    fetch('http:192.168.1.3:13013/store/cart', {
+    fetch('http:127.0.0.1:13013/store/cart', {
       method: 'POST',
       headers: {
          'Accept': 'application/json',
@@ -83,9 +90,11 @@ export default class Cart extends React.Component {
      alert(error.message);
   });
 
+    // sets up the clear cart button for the Cart component
     this.props.navigation.setParams({ clearButton: this.clearCart });
   }
 
+  // renders item for the cart
   _renderItem = ({item}) => (
     <View style={styles.row}>
     <CartItem
@@ -96,6 +105,9 @@ export default class Cart extends React.Component {
       </View>
     );
 
+    /*
+     *  Sets the cart total
+     */
     setTotal()
     {
       let items = this.state.items;
@@ -109,12 +121,14 @@ export default class Cart extends React.Component {
       });
     }
 
-
+    /*
+     *  Removes item from Redis and state.items
+     */
     removeItem(id, name, price) {
       let userId = 'myUserId';
       let product = id + ":" + name + ":" + price;
 
-      fetch('http:192.168.1.3:13013/store/removeFromCart', {
+      fetch('http:127.0.0.1:13013/store/removeFromCart', {
         method: 'POST',
         headers: {
            'Accept': 'application/json',
@@ -156,6 +170,10 @@ export default class Cart extends React.Component {
 
     }
 
+    /*
+     *  Places order to MySQL database
+     *  Clears cart state data and Redis cart if order is successful
+     */
     placeOrder()
     {
       var today = new Date();
@@ -179,7 +197,7 @@ export default class Cart extends React.Component {
 
       if (ids.length > 0)
       {
-      fetch('http:192.168.1.3:13013/store/order', {
+      fetch('http:127.0.0.1:13013/store/order', {
         method: 'POST',
         headers: {
            'Accept': 'application/json',
@@ -208,6 +226,9 @@ export default class Cart extends React.Component {
 
     _keyExtractor = (item, index) => item.productid.toString();
 
+    /*
+     *  Delete button to delete items from cart
+     */
     _renderQuickActions = ({item}) => (
       <View style={styles.actionsContainer}>
         <TouchableOpacity style={styles.actionButton} onPress={() => this.removeItem(item.productid, item.name, item.price)}>
@@ -216,6 +237,9 @@ export default class Cart extends React.Component {
       </View>
     );
 
+  /*
+   *  Clear cart button
+   */
   static navigationOptions = ({ navigation }) => {
     return {
       headerTitle: 'Cart 🛒',

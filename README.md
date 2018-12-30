@@ -13,13 +13,50 @@ REST Api created using Express via Node.js. MySQL database used to hold orders a
 ### App Sample Screen Shots
 
 Home Page
-![Alt text](/images/home.PNG")
+![Alt text](/appScreenShots/home.PNG")
 
 Products
-![Alt text](/images/products.PNG")
+![Alt text](/appScreenShots/products.PNG")
+
+Network Error Handling
+![Alt text](/appScreenShots/networkError.PNG")
 
 Shopping Cart
-![Alt text](/images/cart.PNG")
+![Alt text](/appScreenShots/cart.PNG")
+
+Delete from Shopping Cart
+![Alt text](/appScreenShots/cart.PNG")
 
 Order
-![Alt text](/images/order.PNG")
+![Alt text](/appScreenShots/order.PNG")
+
+#### Running The Project
+
+Frontend:
+install all node packages with
+```
+$ npm install
+```
+run app using expo
+```
+$ expo start
+```
+
+NOTE: If using Expo to run the app change the api host to your machines IP. The code shows the host as local (127.0.0.1) for api calls.
+
+Backend:
+set up a MySQL database and run table creation commands, trigger creation command, and load with sample data.
+
+run a Redis server
+
+install all node packages with
+```
+$ npm install
+```
+
+run api
+```
+$ npm start
+```
+
+NOTE: Change MySQL and Redis port and host in Express code as needed.

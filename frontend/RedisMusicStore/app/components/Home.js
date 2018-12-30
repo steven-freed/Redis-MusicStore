@@ -20,6 +20,7 @@ class Home extends React.Component {
 
   }
 
+  // button for navigation to user cart page
   static navigationOptions = ({ navigation }) => {
      return {
        headerTitle: 'The Music Shoppe',
@@ -49,4 +50,5 @@ const styles = StyleSheet.create({
   }
   });
 
+// Allows Home component all navigation info
 export default withNavigation(Home);

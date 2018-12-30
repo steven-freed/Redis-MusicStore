@@ -11,6 +11,7 @@ import {
   withNavigation
 } from 'react-navigation';
 
+// Components
 import Cart from './app/components/Cart';
 import Category from './app/components/Category';
 import CompanyLogo from './app/components/Company';
@@ -20,6 +21,7 @@ import Home from './app/components/Home';
 
 export default class App extends React.Component {
 
+  // sets base navigation for app
   render() {
     return (
       <AppContainer />
@@ -27,6 +29,7 @@ export default class App extends React.Component {
   }
 }
 
+// App Navigation via React Navigation
 export const AppStack = createStackNavigator({
     Home: Home,
     Category: Category,

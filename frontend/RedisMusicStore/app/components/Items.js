@@ -20,7 +20,7 @@ export default class Items extends React.Component {
 
     var department = this.props.navigation.getParam('header').toLowerCase();
 
-    fetch('http:192.168.1.3:13013/store/products', {
+    fetch('http:127.0.0.1:13013/store/products', {
       method: 'POST',
       headers: {
          'Accept': 'application/json',
