@@ -38,7 +38,7 @@ REST Api created using Express via Node.js. MySQL database used to hold orders a
 
 ## Running The Project
 
-Frontend:
+### Frontend:
 install all node packages with
 ```
 $ npm install
@@ -50,7 +50,7 @@ $ expo start
 
 NOTE: If using Expo to run the app change the api host to your machines IP. The code shows the host as local (127.0.0.1) for api calls.
 
-Backend:
+### Backend:
 set up a MySQL database and run table creation commands, trigger creation command, and load with sample data.
 
 run a Redis server
