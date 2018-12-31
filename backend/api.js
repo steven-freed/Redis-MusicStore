@@ -153,10 +153,9 @@ router.post('/order', function(req, res) {
 
   let id = req.body.id;
   let total = req.body.total;
-  let time = req.body.time;
   let items = req.body.items;
 
-  let query = "INSERT INTO Orders VALUES (NULL, '" + id + "', " + total + ", '" + time + "');";
+  let query = "INSERT INTO Orders VALUES (NULL, '" + id + "', " + total + ", NOW());";
 
   mysql.query(query, function(error, results, fields) {
       if (error)

@@ -176,14 +176,6 @@ export default class Cart extends React.Component {
      */
     placeOrder()
     {
-      var today = new Date();
-      var dd = today.getDate();
-      var mon = today.getMonth()+1;
-      var yyyy = today.getFullYear();
-      var hh = today.getHours();
-      var mm = today.getMinutes();
-      var ss = today.getSeconds();
-      let time = yyyy + "-" + mon + "-" + dd + " " + hh + ":" + mm + ":" + ss;
       let total = this.state.total;
       let userId = 'myUserId';
 
@@ -206,7 +198,6 @@ export default class Cart extends React.Component {
         body: JSON.stringify({
           'id': userId,
           'total': parseFloat(parseFloat(total).toFixed(2)),
-          'time': time,
           'items': ids
         }),
       }).then(res => {
